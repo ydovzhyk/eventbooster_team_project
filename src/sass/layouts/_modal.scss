@@ -184,13 +184,24 @@
 }
 
 .more-btn {
+  position: fixed;
+  bottom: 55px;
+  margin-bottom: 0;
+  margin-left: 37px;
+  width: 160px;
+  height: 40px;
   @include transition;
-  margin: 0 auto;
 
-  @include upto-tablet {
+  @include tablet {
+    margin-left: 0px;
+    bottom: 50px;
     font-size: 13px;
-    width: 230px;
-    height: 40px;
+    width: 250px;
+  }
+
+  @include desktop {
+    bottom: 40px;
+    width: 260px;
   }
 }
 

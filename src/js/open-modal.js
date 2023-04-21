@@ -9,20 +9,18 @@ const conteinerEl = document.querySelector('.event .event__container');
 let currentAuthor;
 
 const openModal = event => {
-  // if path attribute contains event__item class, this is event card
-  // so select it to get event id from data attribute
-  const eventCardEl = event.path.find(elem => {
-    return elem.classList?.contains('event__item');
-  });
-
+  const isPagination = event.target.closest('.tui-page-btn');
+  if (isPagination) {
+    return;
+  }
+  const eventCardEl = event.target.closest('.event__item').dataset.eventId;
   if (eventCardEl) {
     modalBackdropEl.classList.remove('is-hidden');
     document.body.style.overflow = 'hidden';
 
-    fetchCardById(eventCardEl.dataset.eventId)
+    fetchCardById(eventCardEl)
       .then(response => {
         const result = response.data;
-
         const formatData = {
           info: result.name,
           when: result.dates.start.localDate,
@@ -70,9 +68,7 @@ function closeModal() {
 
 modalBackdropEl.addEventListener('click', event => {
   const isBackdrop = event.target.classList.contains('backdrop');
-  const isModalButtonClose = event.path.some(elem => {
-    return elem.classList?.contains('modal__btn-close');
-  });
+  const isModalButtonClose = event.target.closest('.modal__btn-close');
 
   if (isModalButtonClose || isBackdrop) {
     closeModal();
@@ -80,9 +76,7 @@ modalBackdropEl.addEventListener('click', event => {
 });
 
 modalBackdropEl.addEventListener('click', async event => {
-  const isMoreButton = event.path.some(elem => {
-    return elem.classList?.contains('more-btn');
-  });
+  const isMoreButton = event.target.closest('.more-btn');
 
   if (isMoreButton) {
     const response = await fetchCardsByName(currentAuthor, '');
@@ -98,8 +92,8 @@ modalBackdropEl.addEventListener('click', async event => {
       } catch (err) {
         console.log(err);
       }
+      return;
     });
-
     closeModal();
   }
 });

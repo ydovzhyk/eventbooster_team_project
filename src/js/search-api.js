@@ -14,13 +14,14 @@ export const fetchCardsByName = (keyword, countryCode, page) => {
   if (countryCode.length) {
     params.countryCode = countryCode;
   }
-  return axios.get(`${BASE_URL}`, { params });
+  const events = axios.get(`${BASE_URL}`, { params });
+  return events;
 };
 
 export const fetchCardById = id => {
   const params = {
     apikey: API_KEY,
   };
-
-  return axios.get(`${BASE_URL}/${id}`, { params });
+  const event = axios.get(`${BASE_URL}/${id}`, { params });
+  return event;
 };

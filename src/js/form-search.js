@@ -23,8 +23,8 @@ const select = customSelect('select')[0];
 
 fetchCardsByName('', 'ca')
   .then(response => {
-    const result = response.data._embedded.events;
-    conteinerEl.innerHTML = cardsRender(result);
+    const result = response.data._embedded;
+    conteinerEl.innerHTML = cardsRender(result.events);
 
     const pagination = pageMenu(response.data.page.totalElements / 16);
     pagination.on('beforeMove', async function (eventData) {
@@ -44,23 +44,20 @@ const onSearchFormSubmit = async event => {
   event.preventDefault();
   const query = formEl.elements.query.value;
   const locale = formEl.elements.countrySelect.value;
-
   try {
     const { data } = await fetchCardsByName(query, locale);
-
     if (data.page.totalElements === 0) {
       swal('There are no events in this country', {
         closeOnClickOutside: true,
         closeOnEsc: true,
         buttons: false,
       });
-
       select.value = '';
       formEl.reset();
       fetchCardsByName('', 'ca')
         .then(response => {
-          const result = response.data._embedded.events;
-          conteinerEl.innerHTML = cardsRender(result);
+          const result = response.data._embedded;
+          conteinerEl.innerHTML = cardsRender(result.events);
         })
         .catch(error => console.log(error));
       return;
